@@ -7,9 +7,6 @@
 #define ROWS 20
 #define COLS 40
 
-void draw_top() {
-}
-
 void draw_board(int32 *board, int generation) {
 	printw("Generation %d\n", generation);
 	printw("\n");
@@ -38,6 +35,16 @@ void draw_board(int32 *board, int generation) {
 	printw("\n");
 }
 
+
+void make_glider(int32 *board, int32 x, int32 y) {
+	// everyone loves a glider
+	set_board_value(board, ROWS, COLS, x+0, y+1, 1);
+	set_board_value(board, ROWS, COLS, x+1, y+2, 1);
+	set_board_value(board, ROWS, COLS, x+2, y+0, 1);
+	set_board_value(board, ROWS, COLS, x+2, y+1, 1);
+	set_board_value(board, ROWS, COLS, x+2, y+2, 1);
+}
+
 int main() {
 	initscr();
 
@@ -49,12 +56,9 @@ int main() {
 	assert(board != 0);
 	assert(board_2 != 0);
 
-	// everyone loves a glider
-	set_board_value(board, ROWS, COLS, 0, 1, 1);
-	set_board_value(board, ROWS, COLS, 1, 2, 1);
-	set_board_value(board, ROWS, COLS, 2, 0, 1);
-	set_board_value(board, ROWS, COLS, 2, 1, 1);
-	set_board_value(board, ROWS, COLS, 2, 2, 1);
+	make_glider(board, 0, 0);
+	make_glider(board, 10, 10);
+
 
   while (true) {
 		clear();

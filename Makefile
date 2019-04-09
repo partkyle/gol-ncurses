@@ -1,5 +1,6 @@
 
 build: target/game
+.PHONY: build
 
 target:
 	mkdir -p target

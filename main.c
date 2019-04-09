@@ -7,8 +7,20 @@
 #define ROWS 20
 #define COLS 40
 
+void draw_top() {
+}
+
 void draw_board(int32 *board, int generation) {
+	printw("Generation %d\n", generation);
+	printw("\n");
+
+	printw(" ");
+	for (int i = 0; i < COLS; i++) {
+		printw("_");
+	}
+	printw("\n");
 	for (int j = 0; j < ROWS; j++) {
+		printw("|");
 		for (int i = 0; i < COLS; i++) {
 			if (get_board_value(board, ROWS, COLS, i, j) == 1) {
 				printw("*");
@@ -16,12 +28,14 @@ void draw_board(int32 *board, int generation) {
 				printw(" ");
 			}
 		}
-		printw("\n");
+		printw("|\n");
 	}
 
+	printw(" ");
+	for (int i = 0; i < COLS; i++) {
+		printw("_");
+	}
 	printw("\n");
-	printw("\n");
-	printw("Generation %d\n", generation);
 }
 
 int main() {
@@ -48,7 +62,6 @@ int main() {
 		next_generation(board_2, board, ROWS, COLS);
 		draw_board(board, generation);
 
-		//sleep(1);
 		usleep(100*1000);
 
 		refresh();

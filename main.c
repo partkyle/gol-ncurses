@@ -42,6 +42,28 @@ void make_glider(int32 *board, int rows, int cols, int32 x, int32 y) {
 	set_board_value(board, rows, cols, x+2, y+2, 1);
 }
 
+// clear out an entire board so all data is set to 0
+// prevents oddities when resizing
+void clear_board(int32 *board, int rows, int cols) {
+	for (int y=0; y < rows; y++) {
+		for (int x=0; x< cols; x++) {
+			set_board_value(board, rows, cols, x, y, 0);
+		}
+	}
+}
+
+void copy_board(int32 *from, int from_rows, int from_cols, int32 *to, int to_rows, int to_cols) {
+	clear_board(to, to_rows, to_cols);
+
+	for (int y=0; y < from_rows; y++) {
+		for (int x=0; x< from_cols; x++) {
+			if (x >= to_cols || y >= to_rows) continue;
+			int val = get_board_value(from, from_rows, from_cols, x, y);
+			set_board_value(to, to_rows, to_cols, x, y, val);
+		}
+	}
+}
+
 int main() {
 	initscr();
 	// allow looping over getch without blocking
@@ -68,8 +90,17 @@ int main() {
 	int key;
 	while ((key = getch()) != 27) {
 		if (key == KEY_RESIZE) {
+			int prev_rows = rows;
+			int prev_cols = cols;
+
 			rows = LINES - 5;
 			cols = COLS - 4;
+
+			// reuse the previous generation to rebuild the board state at the new size
+			// hopefully nobody dies in the process
+			// Some weird things happen sometimes, but that's part of the fun I suppose
+			copy_board(board_2, prev_rows, prev_cols, board, rows, cols);
+
 			continue;
 		}
 

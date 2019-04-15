@@ -44,11 +44,13 @@ void make_glider(int32 *board, int rows, int cols, int32 x, int32 y) {
 
 int main() {
 	initscr();
+	// allow looping over getch without blocking
+	timeout(1);
 
 	int generation = 0;
 
-	int rows = 20;
-	int cols = 40;
+	int rows = LINES - 5;
+	int cols = COLS - 4;
 
 	// this means would could make a board up to 10x the size
 	// that should be very sufficient
@@ -63,7 +65,14 @@ int main() {
 	make_glider(board, rows, cols, 0, 0);
 	make_glider(board, rows, cols, 10, 10);
 
-	while (true) {
+	int key;
+	while ((key = getch()) != 27) {
+		if (key == KEY_RESIZE) {
+			rows = LINES - 5;
+			cols = COLS - 4;
+			continue;
+		}
+
 		clear();
 
 		next_generation(board_2, board, rows, cols);
